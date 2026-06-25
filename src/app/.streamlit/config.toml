@@ -1,0 +1,3 @@
+[client]
+# Hide Streamlit's developer toolbar
+toolbarMode = "minimal"

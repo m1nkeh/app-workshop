@@ -1,0 +1,21 @@
+[project]
+# Python project id only (required by uv). Not the deployed app name: that's
+# name: in resources/app-starter.app.yml, and is unique per attendee.
+name = "app-starter"
+version = "0.1.0"
+description = "Workshop anchor app starter — Streamlit + Lakebase on Databricks Apps"
+# Pin to 3.11 to match the Databricks Apps runtime. uv provisions 3.11 locally
+# too, so the host's system Python doesn't matter: local and deployed match.
+requires-python = "==3.11.*"
+dependencies = [
+    "streamlit",
+    "psycopg[binary]",
+    "sqlalchemy",
+    "python-dotenv",
+    "databricks-sdk",
+]
+
+# package = false makes the intent explicit: this is an app, not a library, so
+# install the dependencies, don't build and package the project itself.
+[tool.uv]
+package = false

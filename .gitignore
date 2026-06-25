@@ -1,0 +1,11 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.databricks/
+.claude/
+.DS_Store
+
+# uv.lock bakes in the machine's index URLs (corp proxy vs public PyPI), which
+# break across environments. Let each environment resolve fresh instead.
+uv.lock

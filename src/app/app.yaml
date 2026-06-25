@@ -1,0 +1,11 @@
+command:
+  - uv
+  - run
+  - streamlit
+  - run
+  - app.py
+env:
+  # Endpoint comes from the bound resource on deploy, from .env locally.
+  # "postgres" must match the resource key in app-starter.app.yml.
+  - name: LAKEBASE_ENDPOINT
+    valueFrom: postgres
