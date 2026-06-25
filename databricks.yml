@@ -1,0 +1,12 @@
+bundle:
+  name: app-starter
+
+include:
+  - resources/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      profile: <PROFILE> # set your profile here

@@ -1,0 +1,15 @@
+resources:
+  apps:
+    app-starter:
+      # Must be unique in the workspace. Lowercase, hyphens, 30 chars max.
+      name: app-starter-<unique-suffix>
+      # Relative to this file, so ../ up to src/app.
+      source_code_path: ../src/app
+      resources:
+        # Key must match app.yaml's valueFrom.
+        - name: postgres
+          postgres:
+            branch: projects/<PROJECT>/branches/<BRANCH>
+            database: projects/<PROJECT>/branches/<BRANCH>/databases/databricks-postgres
+            # CONNECT + CREATE on the database, but no schema access. That gap is the identity-flip break.
+            permission: CAN_CONNECT_AND_CREATE
