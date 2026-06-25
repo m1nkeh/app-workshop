@@ -1,0 +1,5 @@
+{
+  // Auto-select the uv venv so F5 and the integrated terminal use the same 3.11
+  // interpreter without a manual "Python: Select Interpreter" step.
+  "python.defaultInterpreterPath": "${workspaceFolder}/src/app/.venv/bin/python"
+}

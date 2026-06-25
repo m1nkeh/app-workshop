@@ -1,0 +1,23 @@
+{
+  // Hit F5 to run the app locally (as you), with breakpoints in app.py / db.py.
+  // Streamlit is launched as a module so the debugger attaches to it directly.
+  // Prereq: from src/app run `uv sync` once (creates the .venv this points at),
+  // and have a repo-root .env (db.py finds it by walking up from src/app).
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run app locally (Streamlit)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "streamlit",
+      "args": [
+        "run",
+        "app.py"
+      ],
+      "cwd": "${workspaceFolder}/src/app",
+      "python": "${workspaceFolder}/src/app/.venv/bin/python",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    }
+  ]
+}
