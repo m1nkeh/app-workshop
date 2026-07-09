@@ -5,7 +5,11 @@ command:
   - run
   - app.py
 env:
-  # Endpoint comes from the bound resource on deploy, from .env locally.
-  # "postgres" must match the resource key in app-starter.app.yml.
+  # From the bound resource deployed, .env locally. Must match the "postgres"
+  # key in app-starter.app.yml.
   - name: LAKEBASE_ENDPOINT
     valueFrom: postgres
+  # From the bound uc_securable resource deployed, .env locally. Must match
+  # the "receipts_volume" key in app-starter.app.yml.
+  - name: VOLUME_PATH
+    valueFrom: receipts_volume

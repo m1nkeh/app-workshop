@@ -13,3 +13,10 @@ resources:
             database: projects/<PROJECT>/branches/<BRANCH>/databases/databricks-postgres
             # CONNECT + CREATE on the database, but no schema access. That gap is the identity-flip break.
             permission: CAN_CONNECT_AND_CREATE
+        # Grants WRITE_VOLUME at deploy and exposes the path via valueFrom --
+        # no secret, no hardcoded path. Key must match app.yaml's valueFrom.
+        - name: receipts_volume
+          uc_securable:
+            securable_type: VOLUME
+            securable_full_name: <CATALOG>.<SCHEMA>.<VOLUME>
+            permission: WRITE_VOLUME

@@ -1,9 +1,9 @@
-"""Environment-aware Lakebase connection, shared by the app and any migrations.
+"""Environment-aware Lakebase connection, shared by the app and migrations.
 
-Deployed it reads the injected PG vars and connects as the app SP; local it
-loads .env and connects as you. See the README for the full model. No caching
-here on purpose: the app wraps make_engine() in @st.cache_resource and Alembic
-builds it once per run, so the cache belongs in those callers, not this module.
+Deployed: reads injected PG vars, connects as the app SP. Local: loads .env,
+connects as you. See the README for the full model.
+
+No caching here -- callers (Streamlit's @st.cache_resource, Alembic) own it.
 """
 import os
 
@@ -34,6 +34,11 @@ def connection_params(client: WorkspaceClient | None = None) -> dict:
         "user": user,
         "endpoint": endpoint,
     }
+
+
+# UC Volume path: from the bound uc_securable resource deployed, from .env locally.
+def volume_path() -> str:
+    return os.environ["VOLUME_PATH"]
 
 
 # Pooled engine that mints a fresh OAuth token per connection.
