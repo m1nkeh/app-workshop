@@ -1,3 +1,13 @@
 [client]
 # Hide Streamlit's developer toolbar
 toolbarMode = "minimal"
+
+[theme]
+# White page keeps the data table readable; a soft brand-yellow on the
+# secondary surfaces (sidebar, form panels) carries the identity. It's light
+# enough that the default sidebar collapse chevron stays visible, so no CSS
+# override is needed. primaryColor is the deep amber, not the yellow, so the
+# primary button's white text stays legible (white on yellow fails contrast).
+primaryColor = "#D46E00"
+secondaryBackgroundColor = "#FFE9A8"
+linkColor = "#D46E00"
