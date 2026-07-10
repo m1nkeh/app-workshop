@@ -6,6 +6,8 @@ Not a migration -- demo data must never ship when the schema promotes to main.
 Run from src/app: uv run python seed.py
 Re-runnable: clears only the fake rows, never the attendee's own.
 """
+import os
+
 from sqlalchemy import text
 
 import db
@@ -24,7 +26,12 @@ ROWS = [
 # metadata and no file needs to exist.
 FILE_PATH = f"{db.volume_path()}/seed/sample_receipt.jpg"
 
+# Seed SET ROLEs to the owner group (same as the migrations): the owner owns the
+# table and bypasses RLS, so it can insert rows for the fake submitters.
+owner_role = os.getenv("PGOWNER_ROLE")
 with db.make_engine().begin() as conn:
+    if owner_role:
+        conn.exec_driver_sql(f'SET ROLE "{owner_role}"')
     conn.execute(text("DELETE FROM app.receipts WHERE owner LIKE '%@example.com'"))
     for owner, merchant, amount in ROWS:
         conn.execute(

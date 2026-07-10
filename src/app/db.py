@@ -1,31 +1,23 @@
-"""Environment-aware Lakebase connection, shared by the app and migrations.
-
-Deployed: reads injected PG vars, connects as the app SP. Local: loads .env,
-connects as you. See the README for the full model.
-
-No caching here -- callers (Streamlit's @st.cache_resource, Alembic) own it.
-"""
 import os
 
 from databricks.sdk import WorkspaceClient
 from dotenv import find_dotenv, load_dotenv
 from sqlalchemy import create_engine
 
-# DATABRICKS_CLIENT_ID is injected only when running as the SP; absent locally.
-IS_DEPLOYED = bool(os.getenv("DATABRICKS_CLIENT_ID"))
+IS_DEPLOYED = bool(os.getenv("PGHOST"))
 
 if not IS_DEPLOYED:
     load_dotenv(find_dotenv())  # walks up from src/app to the repo-root .env
 
 
 # Who and where we connect: the app SP when deployed, you locally.
-def connection_params(client: WorkspaceClient | None = None) -> dict:
+def connection_params() -> dict:
     endpoint = os.environ["LAKEBASE_ENDPOINT"]
     if IS_DEPLOYED:
         host = os.environ["PGHOST"]                                        # injected by the platform
         user = os.environ["PGUSER"]                                        # SP client id, injected
     else:
-        w = client or WorkspaceClient()
+        w = WorkspaceClient()
         user = w.current_user.me().user_name                               # your email = your PG role
         host = w.postgres.get_endpoint(name=endpoint).status.hosts.host    # derived from the endpoint
     return {
@@ -46,7 +38,7 @@ def make_engine():
     import psycopg
 
     w = WorkspaceClient()
-    p = connection_params(w)
+    p = connection_params()
 
     def creator():  # fresh token per physical connection the pool opens
         token = w.postgres.generate_database_credential(endpoint=p["endpoint"]).token
